@@ -251,7 +251,7 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) 🎉
 
 **First time?**
-- Dashboard will show $0.00 (no data yet)
+- Dashboard will show S/0.00 (no data yet)
 - Go to **Registro** to add your first transaction
 - Or go to **Agente IA** to chat with the AI
 
@@ -324,10 +324,10 @@ sistema-financiero-app/
 
 **Example conversation:**
 ```
-User: "Gasté $200 en gasolina"
+User: "Gasté S/. 200 en gasolina"
 AI: [Thinking...] → [Writing...]
     "¡Perfecto! Registré tu gasto:
-    💰 Monto: $200 MXN
+    💰 Monto: S/. 200 PEN
     📁 Categoría: Transporte
     💳 Método: Efectivo
 
@@ -487,7 +487,7 @@ MIT License - See [LICENSE](LICENSE) file for details.
 
 - **Issues:** [GitHub Issues](https://github.com/danielcarreon/sistema-financiero-app/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/danielcarreon/sistema-financiero-app/discussions)
-- **Email:** daniel.carreon@example.com
+- **Email:** cesarestebandelao@gmail.com
 
 ---
 
