@@ -126,9 +126,9 @@ export default function AgentePage() {
               Puedo ayudarte a registrar gastos e ingresos, validar tickets y consultar tus datos.
             </p>
             <div className="inline-flex flex-col gap-2 text-xs text-gray-600 dark:text-gray-400 bg-white/50 dark:bg-gray-700/50 rounded-xl p-4 backdrop-blur-sm">
-              <p>💬 "Gasté 500 pesos en gasolina"</p>
+              <p>💬 "Gasté 500 soles en gasolina"</p>
               <p>📸 Sube una foto del ticket</p>
-              <p>💰 "Vendí un tour de 8,500 pesos"</p>
+              <p>💰 "Vendí un tour de 8,500 soles"</p>
             </div>
           </div>
         )}
