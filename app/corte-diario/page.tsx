@@ -79,7 +79,7 @@ export default function CorteDiarioPage() {
 
       setMensaje({
         tipo: 'success',
-        texto: `✅ Corte registrado: ${ingresosValidos.length} categorías, $${calcularTotal().toLocaleString('es-MX')} MXN total`
+        texto: `✅ Corte registrado: ${ingresosValidos.length} categorías, $${calcularTotal().toLocaleString('es-PE')} PEN total`
       })
 
       // Resetear formulario
@@ -201,7 +201,7 @@ export default function CorteDiarioPage() {
 
               <div>
                 <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                  Monto Total ($)
+                  Monto Total (S/. )
                 </label>
                 <input
                   type="number"
