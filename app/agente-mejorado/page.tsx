@@ -188,14 +188,14 @@ export default function AgenteMejoradoPage() {
         if (montoOCR && Math.abs(montoDeclared - montoOCR) > 50) {
           const confirmMessage = `⚠️ **VERIFICACIÓN DE MONTO:**
 
-Tú dijiste: $${montoDeclared.toLocaleString('es-MX')} MXN
-El ticket muestra: $${montoOCR.toLocaleString('es-MX')} MXN
+Tú dijiste: $${montoDeclared.toLocaleString('es-PE')} PEN
+El ticket muestra: $${montoOCR.toLocaleString('es-PE')} PEN
 
-Diferencia: $${Math.abs(montoDeclared - montoOCR).toLocaleString('es-MX')}
+Diferencia: $${Math.abs(montoDeclared - montoOCR).toLocaleString('es-PE')}
 
 ¿Cuál monto es el correcto?
-1️⃣ El que yo dije ($${montoDeclared.toLocaleString('es-MX')})
-2️⃣ El del ticket ($${montoOCR.toLocaleString('es-MX')})`
+1️⃣ El que yo dije ($${montoDeclared.toLocaleString('es-PE')})
+2️⃣ El del ticket ($${montoOCR.toLocaleString('es-PE')})`
 
           await sendMessage(confirmMessage, imageUrls)
           setInput('')
