@@ -7,6 +7,6 @@ export default function Home() {
         Estado: <strong>Esperando conexión a Base de Datos</strong>
       </div>
     </main>
-    </main >
+
   )
 }
