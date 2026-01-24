@@ -33,17 +33,8 @@ export const financeService = {
 
         if (txError) throw txError;
 
-        // 3. Actualizar saldo de la cuenta (optimista)
-        // Nota: Idealmente esto sería un Trigger en SQL, pero para MVP lo hacemos aquí
-        const { error: balanceError } = await supabase.rpc('increment_balance', {
-            row_id: dto.account_id,
-            xxx: finalAmount
-        }).catch(() => {
-            // Fallback si no existe la función RPC: update manual
-            return supabase.from('accounts')
-                .update({ balance: finalAmount }) // Esto está mal, necesita ser incremental. 
-            // Corregiremos esto creando una función SQL o haciendo fetch+update
-        });
+        // 3. Actualizar saldo de la cuenta (Manual fetch+update por ahora)
+        // (En producción usaremos un Trigger de Postgres)
 
         // CORRECCIÓN: Haremos un fetch+update simple por ahora para no complicar con RPCs todavía
         // (En producción usaremos un Trigger de Postgres)
