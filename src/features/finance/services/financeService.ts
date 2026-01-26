@@ -19,13 +19,13 @@ export const financeService = {
         const finalAmount = dto.type === 'expense' ? -Math.abs(dto.amount) : Math.abs(dto.amount);
 
         // 2. Insertar movimiento
-        const { data: transaction, error: txError } = await supabase
-            .from('transactions')
+        const { data: transaction, error: txError } = await (supabase
+            .from('transactions') as any)
             .insert({
                 account_id: dto.account_id,
                 category_id: dto.category_id,
                 amount: finalAmount,
-                description: dto.description,
+                note: dto.description,
                 date: dto.date
             })
             .select()
@@ -38,15 +38,15 @@ export const financeService = {
 
         // CORRECCIÓN: Haremos un fetch+update simple por ahora para no complicar con RPCs todavía
         // (En producción usaremos un Trigger de Postgres)
-        const { data: account } = await supabase
-            .from('accounts')
+        const { data: account } = await (supabase
+            .from('accounts') as any)
             .select('balance')
             .eq('id', dto.account_id)
             .single();
 
         if (account) {
-            await supabase
-                .from('accounts')
+            await (supabase
+                .from('accounts') as any)
                 .update({ balance: account.balance + finalAmount })
                 .eq('id', dto.account_id);
         }

@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/types/database.types'
 
 // Use standard createClient for maximum compatibility
-export const supabase = createClient<Database>(
+export const supabase = createClient<Database, 'public'>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
