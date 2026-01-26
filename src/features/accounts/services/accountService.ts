@@ -20,7 +20,10 @@ export const accountService = {
             .order('created_at', { ascending: true });
 
         if (error) {
-            console.error('Raw Supabase Error:', JSON.stringify(error, null, 2));
+            console.error('🔴 SUPABASE ERROR:', error);
+            console.error('Message:', error.message);
+            console.error('Details:', error.details);
+            console.error('Hint:', error.hint);
             throw error;
         }
         return data as Account[];
