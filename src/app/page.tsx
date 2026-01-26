@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { SmartTransactionForm } from '@/features/transactions/components/SmartTransactionForm';
 import { TransactionModal } from '@/features/transactions/components/TransactionModal';
+import { Card } from '@/shared/components/ui/Card';
 import { Building2, Plus, TrendingUp, Wallet, ArrowRight, Mic } from 'lucide-react';
 import { NewAccountForm } from '@/features/accounts/components/NewAccountForm';
 import { accountService } from '@/features/accounts/services/accountService';

@@ -105,7 +105,7 @@ export interface Database {
                     amount: number
                     type: 'income' | 'expense' | 'transfer' | null
                     date: string | null
-                    note: string | null
+                    description: string | null
                     created_at: string
                 }
                 Insert: {
@@ -116,7 +116,7 @@ export interface Database {
                     amount: number
                     type?: 'income' | 'expense' | 'transfer' | null
                     date?: string | null
-                    note?: string | null
+                    description?: string | null
                     created_at?: string
                 }
                 Update: {
@@ -127,7 +127,7 @@ export interface Database {
                     amount?: number
                     type?: 'income' | 'expense' | 'transfer' | null
                     date?: string | null
-                    note?: string | null
+                    description?: string | null
                     created_at?: string
                 }
             }

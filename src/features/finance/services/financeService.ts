@@ -18,14 +18,19 @@ export const financeService = {
         // 1. Calcular monto real (negativo si es gasto)
         const finalAmount = dto.type === 'expense' ? -Math.abs(dto.amount) : Math.abs(dto.amount);
 
+        // 1.5 Obtener usuario actual
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Usuario no autenticado');
+
         // 2. Insertar movimiento
         const { data: transaction, error: txError } = await (supabase
             .from('transactions') as any)
             .insert({
+                user_id: user.id,
                 account_id: dto.account_id,
                 category_id: dto.category_id,
                 amount: finalAmount,
-                note: dto.description,
+                description: dto.description,
                 date: dto.date
             })
             .select()
