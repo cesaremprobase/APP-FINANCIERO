@@ -39,7 +39,7 @@ export function NewAccountForm({ onSuccess, onCancel }: NewAccountFormProps) {
                 balance: parseFloat(balance) || 0,
                 icon: selectedIcon,
                 color: selectedColor,
-                type: selectedIcon, // Mapping icon to type (wallet, bank, card, etc.) to satisfy DB constraint
+                type: 'personal', // Fixed: Constraint accounts_type_check only allows 'personal' or 'business'
             } as any);
             onSuccess();
         } catch (error) {
