@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface CardProps {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     className?: string;
     title?: string;
@@ -9,14 +9,14 @@ interface CardProps {
     gradient?: boolean; // New prop for purple gradient
 }
 
-export function Card({ children, className = '', title, subtitle, action, gradient = false }: CardProps) {
+export function Card({ children, className = '', title, subtitle, action, gradient = false, ...props }: CardProps) {
     const baseClasses = 'rounded-3xl p-6 shadow-sm border transition-all duration-200';
     const variantClasses = gradient
         ? 'bg-gradient-to-br from-indigo-600 to-purple-700 text-white border-transparent'
         : 'bg-white border-gray-100 text-gray-800 hover:shadow-md';
 
     return (
-        <div className={`${baseClasses} ${variantClasses} ${className}`}>
+        <div className={`${baseClasses} ${variantClasses} ${className}`} {...props}>
             {(title || action) && (
                 <div className="flex justify-between items-start mb-4">
                     <div>
