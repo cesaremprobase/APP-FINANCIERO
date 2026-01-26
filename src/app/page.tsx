@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card } from '@/shared/components/ui/Card';
-import { Building2, Plus, TrendingUp, Wallet, ArrowRight } from 'lucide-react';
+import { SmartTransactionForm } from '@/features/transactions/components/SmartTransactionForm';
+import { TransactionModal } from '@/features/transactions/components/TransactionModal';
+import { Building2, Plus, TrendingUp, Wallet, ArrowRight, Mic } from 'lucide-react';
 import { NewAccountForm } from '@/features/accounts/components/NewAccountForm';
 import { accountService } from '@/features/accounts/services/accountService';
 import { Database } from '@/types/database.types';
@@ -11,6 +12,7 @@ type Account = Database['public']['Tables']['accounts']['Row'];
 
 export default function DashboardPage() {
   const [showNewAccountModal, setShowNewAccountModal] = useState(false);
+  const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [totalBalance, setTotalBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +51,8 @@ export default function DashboardPage() {
             gradient
             title="Patrimonio Total"
             action={<Building2 className="text-indigo-200 w-6 h-6" />}
-            className="md:col-span-1 shadow-xl shadow-indigo-200 relative overflow-hidden group"
+            className="md:col-span-1 shadow-xl shadow-indigo-200 relative overflow-hidden group transition-all hover:scale-[1.02] cursor-pointer"
+            onClick={() => { }} // Placeholder for future detail view
           >
             <div className="mt-2 relative z-10">
               <div className="text-4xl font-extrabold text-white tracking-tight">
@@ -75,7 +78,13 @@ export default function DashboardPage() {
               className="border-l-4"
               style={{ borderLeftColor: account.color?.replace('bg-', '') || '#4f46e5' }}
             >
-              <Card className="hover:scale-[1.02] transition-transform cursor-pointer">
+              <Card
+                className="hover:scale-[1.02] transition-transform cursor-pointer"
+                onClick={() => {
+                  // Idealmente abriría detalle, por ahora log
+                  console.log('Clicked account', account.id);
+                }}
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${account.color || 'bg-gray-100'} text-white`}>
@@ -99,7 +108,7 @@ export default function DashboardPage() {
           {/* Add Account Button */}
           <button
             onClick={() => setShowNewAccountModal(true)}
-            className="h-full min-h-[160px] rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 transition-all group flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-indigo-600"
+            className="h-full min-h-[120px] rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 transition-all group flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-indigo-600"
           >
             <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Plus className="w-6 h-6" />
@@ -110,7 +119,23 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Floating Action Button (FAB) for Smart Transaction */}
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-40">
+        <button
+          onClick={() => setShowTransactionModal(true)}
+          className="group flex items-center gap-3 pl-4 pr-6 py-3 bg-gray-900 text-white rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all border border-gray-800"
+        >
+          <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center group-hover:rotate-12 transition-transform">
+            <Plus className="w-6 h-6 text-white" />
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="text-sm font-bold leading-tight">Registrar</span>
+            <span className="text-[10px] text-gray-400 leading-tight">Gasto o Ingreso</span>
+          </div>
+        </button>
+      </div>
+
+      {/* Modals */}
       {showNewAccountModal && (
         <NewAccountForm
           onSuccess={() => {
@@ -120,6 +145,21 @@ export default function DashboardPage() {
           onCancel={() => setShowNewAccountModal(false)}
         />
       )}
+
+      <TransactionModal
+        isOpen={showTransactionModal}
+        onClose={() => setShowTransactionModal(false)}
+      >
+        <SmartTransactionForm
+          accounts={accounts}
+          onCancel={() => setShowTransactionModal(false)}
+          onSuccess={() => {
+            setShowTransactionModal(false);
+            fetchData(); // Refresh balances
+          }}
+        />
+      </TransactionModal>
+
     </main>
   );
 }
