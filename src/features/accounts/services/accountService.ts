@@ -16,7 +16,7 @@ export const accountService = {
             .from('accounts')
             .select('*')
             .eq('user_id', user.id)
-            .eq('is_archived', false) // Don't show archived by default
+            // .eq('is_archived', false) // Column does not exist in DB currently
             .order('created_at', { ascending: true });
 
         if (error) {

@@ -39,7 +39,8 @@ export function NewAccountForm({ onSuccess, onCancel }: NewAccountFormProps) {
                 balance: parseFloat(balance) || 0,
                 icon: selectedIcon,
                 color: selectedColor,
-            });
+                type: selectedIcon, // Mapping icon to type (wallet, bank, card, etc.) to satisfy DB constraint
+            } as any);
             onSuccess();
         } catch (error) {
             console.error('Error creating account:', error);
@@ -92,8 +93,8 @@ export function NewAccountForm({ onSuccess, onCancel }: NewAccountFormProps) {
                                     type="button"
                                     onClick={() => setSelectedIcon(item.id)}
                                     className={`flex flex-col items-center gap-2 p-3 rounded-2xl w-full border-2 transition-all ${selectedIcon === item.id
-                                            ? 'border-indigo-600 bg-indigo-50 text-indigo-600'
-                                            : 'border-transparent bg-gray-50 text-gray-400 hover:bg-gray-100'
+                                        ? 'border-indigo-600 bg-indigo-50 text-indigo-600'
+                                        : 'border-transparent bg-gray-50 text-gray-400 hover:bg-gray-100'
                                         }`}
                                 >
                                     {item.icon}
