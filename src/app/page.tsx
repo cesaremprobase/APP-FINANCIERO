@@ -1,10 +1,39 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Card } from '@/shared/components/ui/Card';
-import { Button } from '@/shared/components/ui/Button';
-import { Building2, Plus, TrendingUp } from 'lucide-react';
+import { Building2, Plus, TrendingUp, Wallet, ArrowRight } from 'lucide-react';
+import { NewAccountForm } from '@/features/accounts/components/NewAccountForm';
+import { accountService } from '@/features/accounts/services/accountService';
+import { Database } from '@/types/database.types';
+
+type Account = Database['public']['Tables']['accounts']['Row'];
 
 export default function DashboardPage() {
+  const [showNewAccountModal, setShowNewAccountModal] = useState(false);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = async () => {
+    try {
+      // NOTE: In a real app we might want to use React Query here for caching
+      const accs = await accountService.getAccounts();
+      setAccounts(accs);
+      setTotalBalance(accs.reduce((sum, a) => sum + (a.balance || 0), 0));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <main className="min-h-screen bg-gray-50 p-6 md:p-10 font-sans">
+    <main className="min-h-screen bg-gray-50 p-6 md:p-10 font-sans pb-32">
       <div className="max-w-5xl mx-auto space-y-8">
 
         {/* Header */}
@@ -20,10 +49,12 @@ export default function DashboardPage() {
             gradient
             title="Patrimonio Total"
             action={<Building2 className="text-indigo-200 w-6 h-6" />}
-            className="md:col-span-1 shadow-xl shadow-indigo-200"
+            className="md:col-span-1 shadow-xl shadow-indigo-200 relative overflow-hidden group"
           >
-            <div className="mt-2">
-              <div className="text-4xl font-extrabold text-white tracking-tight">S/ 0.00</div>
+            <div className="mt-2 relative z-10">
+              <div className="text-4xl font-extrabold text-white tracking-tight">
+                S/ {totalBalance.toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+              </div>
 
               <div className="mt-4 flex items-center gap-2">
                 <div className="inline-flex items-center px-2.5 py-1 rounded-lg bg-white/20 text-white text-xs font-medium backdrop-blur-sm">
@@ -32,10 +63,42 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
+
+            {/* Decoration */}
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all duration-500" />
           </Card>
 
-          {/* Add Account Placeholder (Dashed) */}
-          <button className="h-full min-h-[180px] rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 hover:bg-white hover:border-indigo-300 hover:shadow-md transition-all group flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-indigo-600">
+          {/* Account Lists */}
+          {accounts.map((account) => (
+            <Card
+              key={account.id}
+              className="hover:scale-[1.02] transition-transform cursor-pointer border-l-4"
+              style={{ borderLeftColor: account.color?.replace('bg-', '') || '#4f46e5' }} // Fallback simplistic color logic
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${account.color || 'bg-gray-100'} text-white`}>
+                    <Wallet className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900">{account.name}</div>
+                    <div className="text-xs text-gray-400">Cuenta Personal</div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-lg text-gray-900">
+                    S/ {account.balance?.toLocaleString('es-PE', { minimumFractionDigits: 2 })}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          ))}
+
+          {/* Add Account Button */}
+          <button
+            onClick={() => setShowNewAccountModal(true)}
+            className="h-full min-h-[160px] rounded-3xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400 hover:shadow-lg hover:shadow-indigo-100 transition-all group flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-indigo-600"
+          >
             <div className="w-12 h-12 rounded-full bg-white border border-gray-200 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
               <Plus className="w-6 h-6" />
             </div>
@@ -44,6 +107,17 @@ export default function DashboardPage() {
 
         </div>
       </div>
+
+      {/* Modal */}
+      {showNewAccountModal && (
+        <NewAccountForm
+          onSuccess={() => {
+            setShowNewAccountModal(false);
+            fetchData(); // Refresh list
+          }}
+          onCancel={() => setShowNewAccountModal(false)}
+        />
+      )}
     </main>
   );
 }
