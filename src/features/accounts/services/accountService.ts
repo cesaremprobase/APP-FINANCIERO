@@ -41,7 +41,7 @@ export const accountService = {
             .insert({
                 ...account,
                 user_id: user.id,
-            })
+            } as any)
             .select()
             .single();
 
