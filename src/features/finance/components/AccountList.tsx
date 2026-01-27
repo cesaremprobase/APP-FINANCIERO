@@ -38,7 +38,7 @@ export function AccountList() {
                     <div>
                         <p className="text-indigo-200 text-sm font-medium">Patrimonio Total</p>
                         <h2 className="text-3xl font-bold mt-1">
-                            {formatCurrency(accounts.reduce((sum, acc) => sum + acc.balance, 0))}
+                            {formatCurrency(accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0))}
                         </h2>
                     </div>
                     <div className="p-2 bg-white/20 rounded-lg">
@@ -67,8 +67,8 @@ export function AccountList() {
                         </div>
                     </div>
                     <div className="mt-4">
-                        <span className={`text-2xl font-bold ${account.balance < 0 ? 'text-red-500' : 'text-gray-900'}`}>
-                            {formatCurrency(account.balance)}
+                        <span className={`text-2xl font-bold ${(account.balance || 0) < 0 ? 'text-red-500' : 'text-gray-900'}`}>
+                            {formatCurrency(account.balance || 0)}
                         </span>
                     </div>
                 </div>

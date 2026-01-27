@@ -5,8 +5,11 @@ export interface Account {
   id: string;
   user_id: string;
   name: string;
-  type: AccountType;
-  balance: number;
+  type?: AccountType;
+  balance: number | null;
+  icon?: string | null;
+  color?: string | null;
+  is_archived?: boolean | null;
   created_at?: string;
 }
 
@@ -29,7 +32,7 @@ export interface Transaction {
   date: string;
   related_sale_id?: string;
   related_expense_id?: string;
-  
+
   // Joins opcionales
   account?: Account;
   category?: Category;

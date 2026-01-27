@@ -45,7 +45,7 @@ export function SmartTransactionForm({ onSuccess, onCancel, accounts }: SmartTra
         try {
             await financeService.createTransaction({
                 account_id: selectedAccount,
-                category_id: null, // We'll need to fetch categories properly later, for now we let backend/service handle or default
+                category_id: undefined, // We'll need to fetch categories properly later, for now we let backend/service handle or default
                 amount: parsedData.amount,
                 description: parsedData.description,
                 type: parsedData.type,
